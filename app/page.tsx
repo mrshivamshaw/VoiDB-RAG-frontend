@@ -20,7 +20,7 @@ export default function Home() {
     clearMessages()
   }
 
-  if (!isLoggedIn) {
+  if (!localStorage.getItem('token') || !isLoggedIn) {
     return <LoginPage />
   }
 

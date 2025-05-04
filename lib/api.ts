@@ -1,7 +1,7 @@
 // API client for interacting with the backend
 import type { DatabaseConfig } from "./types"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 
 export async function loginUser(username: string, password: string): Promise<{ success: boolean; error?: string }> {
   try {

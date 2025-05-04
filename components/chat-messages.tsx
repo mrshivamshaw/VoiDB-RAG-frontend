@@ -1,3 +1,4 @@
+import { useChatStore } from "@/lib/store/chat-store"
 import type { ChatMessage, QueryResult } from "@/lib/types"
 import { User, Database, Clock } from "lucide-react"
 
@@ -6,6 +7,9 @@ interface ChatMessagesProps {
 }
 
 export default function ChatMessages({ messages }: ChatMessagesProps) {
+    const {
+      isProcessing,
+    } = useChatStore()
   if (messages.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-gray-400 p-6">
@@ -53,6 +57,13 @@ export default function ChatMessages({ messages }: ChatMessagesProps) {
                   <>
                     <User size={16} />
                     <span className="font-medium">You</span>
+                    {isProcessing && (
+                      <span className="flex text-sm text-gray-500 ml-2">
+                        <span className="animate-bounce">.</span>
+                        <span className="animate-bounce delay-75">.</span>
+                        <span className="animate-bounce delay-150">.</span>
+                      </span>
+                    )}
                   </>
                 ) : (
                   <>
@@ -67,7 +78,7 @@ export default function ChatMessages({ messages }: ChatMessagesProps) {
               </div>
 
               <div className={`pl-6 ${message.role === "assistant" ? "text-gray-100" : ""}`}>
-                {message.type === "text" && <div>{message.content}</div>}
+                {message.type === "text" && <div dangerouslySetInnerHTML={{ __html: message.content }} />}
 
                 {message.type === "sql" && (
                   <div className="font-mono text-sm bg-[#1a1a1a] p-3 rounded overflow-x-auto border border-[#3a3a3a]">
@@ -76,10 +87,10 @@ export default function ChatMessages({ messages }: ChatMessagesProps) {
                 )}
 
                 {message.type === "result" && (
-                  <div>{message.content }</div>
+                  <div dangerouslySetInnerHTML={{ __html: message.content }} />
                 )}
 
-                {message.type === "error" && <div className="text-red-400">{message.content}</div>}
+                {message.type === "error" && <div dangerouslySetInnerHTML={{ __html: message.content }} />}
               </div>
             </div>
           ))}
