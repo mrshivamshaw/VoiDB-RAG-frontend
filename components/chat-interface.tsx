@@ -198,7 +198,7 @@ export default function ChatInterface({ isConfigured, onOpenConfig, onLogout }: 
         </div>
 
         <div className="flex-1 flex flex-col overflow-hidden">
-          <div className="flex-1 overflow-y-auto p-6">
+          <div className="flex-1 max-h-[calc(85vh-112px)] overflow-y-auto p-6">
             <ChatMessages messages={currentMessages} />
             <div ref={messagesEndRef} />
           </div>
