@@ -1,4 +1,5 @@
 "use client"
+import { useEffect, useState } from "react"
 import ChatInterface from "@/components/chat-interface"
 import ConfigPanel from "@/components/config-panel"
 import LoginPage from "@/components/login-page"
@@ -13,23 +14,38 @@ export default function Home() {
   const { configPanelOpen, closeConfigPanel, openConfigPanel } = useUIStore()
   const { clearMessages } = useChatStore()
 
-  // Handle logout - reset configuration and clear messages
+  const [isClient, setIsClient] = useState(false)
+  const [hasToken, setHasToken] = useState(false)
+
+  // Run this only on client after mount
+  useEffect(() => {
+    setIsClient(true)
+    const token = localStorage.getItem("token")
+    setHasToken(!!token)
+  }, [])
+
   const handleLogout = () => {
     logout()
     resetConfiguration()
     clearMessages()
   }
 
-  if (!localStorage.getItem('token') || !isLoggedIn) {
+  if (!isClient) {
+    return null // or loading skeleton
+  }
+
+  if (!hasToken || !isLoggedIn) {
     return <LoginPage />
   }
 
   return (
     <div className="flex h-screen bg-[#0f0f0f] text-white overflow-hidden">
       <ConfigPanel isOpen={configPanelOpen} onClose={closeConfigPanel} />
-
-      <ChatInterface isConfigured={isConfigured} onOpenConfig={openConfigPanel} onLogout={handleLogout} />
+      <ChatInterface
+        isConfigured={isConfigured}
+        onOpenConfig={openConfigPanel}
+        onLogout={handleLogout}
+      />
     </div>
   )
 }
-
