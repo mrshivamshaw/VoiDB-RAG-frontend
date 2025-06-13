@@ -22,7 +22,7 @@ export default function Home() {
     setIsClient(true)
     const token = localStorage.getItem("token")
     setHasToken(!!token)
-  }, [])
+  }, [hasToken])
 
   const handleLogout = () => {
     logout()
@@ -35,7 +35,7 @@ export default function Home() {
   }
 
   if (!hasToken || !isLoggedIn) {
-    return <LoginPage />
+    return <LoginPage setHasToken={setHasToken} />
   }
 
   return (

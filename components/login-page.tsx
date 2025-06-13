@@ -12,7 +12,7 @@ import { Database, Loader2 } from "lucide-react"
 import { useAuthStore } from "@/lib/store/auth-store"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
-export default function LoginPage() {
+export default function LoginPage({setHasToken}:any) {
   const { login, signup, isLoading, error, clearError } = useAuthStore()
   const [activeTab, setActiveTab] = useState("login")
   const [username, setUsername] = useState("")
@@ -34,7 +34,11 @@ export default function LoginPage() {
     }
 
     setValidationError("")
-    await login(username, password)
+    const success = await login(username, password)
+
+    if (success) {
+      setHasToken(true)
+    }
   }
 
   const handleSignup = async (e: React.FormEvent) => {
